@@ -22,8 +22,8 @@
 \SetKeys{
     lang = vi,
     author = ,
-    subject = Thực tập Đồ án môn học Đa ngành - Hướng công Nghệ phần mềm (CO3109),
-    project = [PROJECT NAME],
+    subject = Thực tập Đồ án môn học Đa ngành,
+    project = Green Sense - Nông trại thông minh,
 }
 
 \ProcessOptions

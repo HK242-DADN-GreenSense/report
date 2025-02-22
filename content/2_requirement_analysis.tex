@@ -1,0 +1,60 @@
+\section{Giới thiệu đề tài}
+
+\subsection{Bối cảnh \& động lực}
+
+Nhà kính được sử dụng để điều chỉnh điều kiện khí hậu cho những cây trồng nhạy cảm hoặc không phải cây bản địa của khí hậu tự nhiên địa phương. Những cây trồng này có thể yêu cầu một môi trường ổn định và kiểm soát chặt chẽ về nhiệt độ, độ ẩm, ánh sáng và các yếu tố khí hậu khác để phát triển tốt. Do các yếu tố bên ngoài như ánh sáng mặt trời, gió và mưa có ảnh hưởng mạnh mẽ và thay đổi không lường trước được đến nhà kính, việc duy trì một nhà kính ở điều kiện thích hợp luôn là một công việc tốn nhiều công sức và thời gian.
+
+Vì vậy, các nhà kính thương mại hiện đại ngày nay không còn là những cơ sở sản xuất đơn giản mà đã trở thành các cơ sở sản xuất công nghệ cao, với các thiết bị hiện đại như màn che động cơ tự động, hệ thống điều khiển khí hậu nhân tạo, hệ thống chiếu sáng tự động và các thiết bị khác. Các hệ thống này có thể được điều khiển bằng máy tính để tự động hóa quá trình và tối ưu hóa điều kiện cho sự phát triển của cây trồng. Điều này giúp giảm thiểu sự can thiệp thủ công và tăng hiệu quả sản xuất. Các kỹ thuật tiên tiến như cảm biến và hệ thống giám sát được sử dụng để liên tục đo lường và kiểm tra các yếu tố như nhiệt độ không khí, độ ẩm, và sự thay đổi áp suất bên trong do hơi nước. Những thông số này giúp ước tính mức độ tối ưu của điều kiện trong nhà kính, đảm bảo rằng cây trồng luôn phát triển trong môi trường lý tưởng.
+
+Mục tiêu của dự án này là phát triển một nguyên mẫu của hệ thống như vậy, kết hợp các tiến bộ trong công nghệ Internet và kết nối không dây, nhằm tăng cường tính tiện lợi và linh hoạt cho việc giám sát và điều khiển nhà kính. Hệ thống này sẽ giúp các nhà nông và các cơ sở sản xuất có thể dễ dàng quản lý và điều chỉnh các yếu tố khí hậu từ xa, đảm bảo năng suất và chất lượng cây trồng mà không cần sự can thiệp thủ công phức tạp.
+
+\newpage
+%%%%%%%%%%%%%%%%%%%
+
+\section{Các yêu cầu chức năng và phi chức năng}
+\subsection{Yêu cầu chức năng}
+
+\subsubsection{Về mặt thiết bị IoT:}
+\begin{itemize}
+    \item [--] Cung cấp báo cáo khí hậu trực tiếp dưới dạng biểu đồ và nhật ký, giúp theo dõi nhiệt độ, độ ẩm và ánh sáng trong nhà kính.  
+    \item [--] Tưới nước tự động theo độ ẩm đất và loại cây, đảm bảo cây phát triển khỏe mạnh mà không cần tưới thủ công thường xuyên.  
+    \item [--] Duy trì điều kiện khí hậu lý tưởng (nhiệt độ, thông gió, chiếu sáng) bằng phương thức thủ công, tự động hoặc theo lịch trình cài đặt trước.  
+    \item [--] Phát hiện và báo cáo các sự cố khi không thể duy trì điều kiện môi trường trong ngưỡng cho phép, giúp người dùng can thiệp kịp thời.  
+    \item [--] Nhắc nhở định kỳ các công việc bảo trì thủ công như kiểm tra nguồn nước, vệ sinh cửa sổ và đảm bảo hệ thống thông gió hoạt động hiệu quả.
+\end{itemize}
+
+\subsubsection{Về mặt Web App:}
+\begin{itemize}
+     \item [--] Cho phép người dùng điều khiển thủ công các chức năng cụ thể trong nhà kính, như tưới cây, bật/tắt đèn và kích hoạt hệ thống cảnh báo, giúp linh hoạt trong việc quản lý môi trường trồng trọt.
+     \item [--] Cung cấp số liệu khí hậu hiện tại cùng với dữ liệu lịch sử, giúp người dùng theo dõi sự thay đổi môi trường và đưa ra quyết định phù hợp cho cây trồng.
+     \item [--] Thực hiện phân tích thống kê và cung cấp báo cáo chi tiết về tình trạng và hiệu suất hoạt động của hệ thống, giúp tối ưu hóa quá trình vận hành và bảo trì. 
+\end{itemize}
+
+\subsection{Yêu cầu phi chức năng}
+
+\subsubsection{Về mặt thiết bị IoT:}
+\begin{itemize}
+    \item [--] Hệ thống phải hoạt động liên tục 24/7 với thời gian gián đoạn theo lịch trình không quá 2 giờ mỗi tháng và không có gián đoạn đột xuất quá 10 phút.
+    \item [--] Độ trễ của bộ truyền động khi thực hiện lệnh không được vượt quá 5 giây trong 95\% trường hợp kiểm tra.
+    \item [--] Hệ thống phải ghi nhật ký dữ liệu lịch sử liên tục, lưu trữ ít nhất 180 ngày với độ chính xác $\pm 1\%$ và không mất dữ liệu quá 0,1\% trong quá trình vận hành.
+    \item [--] Cơ sở dữ liệu phải hỗ trợ lưu trữ tối thiểu 500MB và có thể mở rộng lên đến 2GB mà không ảnh hưởng đến hiệu suất truy xuất dữ liệu (tốc độ phản hồi dưới 1 giây cho 95\% truy vấn).
+    \item [--] Hướng dẫn sử dụng phải dễ hiểu, cho phép người dùng mới vận hành hệ thống trong vòng 10 phút mà không cần trợ giúp. Giao diện LCD và nút bấm phải phản hồi trong vòng 1 giây sau khi thao tác.
+\end{itemize}
+
+\subsubsection{Về mặt Web App:}
+\begin{itemize}
+     \item [--] Hệ thống phải dễ sử dụng cho mọi độ tuổi, đặc biệt hướng đến nông dân, người làm vườn và quản lý nông nghiệp, với thời gian đào tạo không quá 15 phút.
+     \item [--] Ứng dụng web phải tương thích với các trình duyệt phổ biến, bao gồm Chrome, Firefox, Edge và Safari, với hiệu suất ổn định trên cả máy tính và thiết bị di động.
+     \item [--] Kết nối với máy chủ phải hoàn tất trong vòng 2 giây, trong khi các thao tác giao diện cơ bản (bấm nút, cuộn trang) phải phản hồi trong vòng 500ms.
+     \item [--] Hỗ trợ lưu trữ dữ liệu cục bộ tối đa 100MB, đồng thời đồng bộ dữ liệu với máy chủ mà không làm gián đoạn hoạt động của ứng dụng.
+     \item [--] Người dùng phải có thể xác thực bằng mật khẩu và/hoặc hình vẽ mẫu, với mật khẩu được lưu trữ an toàn theo tiêu chuẩn mã hóa SHA-256 hoặc cao hơn.
+\end{itemize}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
