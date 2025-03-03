@@ -1,3 +1,56 @@
 \section{Danh sách thiết bị IoT}
+\subsection{Cảm biến nhiệt độ độ ẩm DHT20}
+\begin{itemize}
+    \item [--] \textbf{Ứng dụng:} Đo nhiệt độ và báo cáo lên máy chủ IoT. Nhiệt độ là một chỉ số quan trọng cho nhiều hoạt động bảo trì nhà kính, bao gồm nhưng không giới hạn ở việc có tưới nước hay không, tưới bao nhiêu, có triển khai màn che nắng hay không, v.v. 
+    \item [--] \textbf{Đầu vào:} Nhiệt độ không khí - cảm biến được gắn trên mặt đất, tốt nhất là treo ở trung tâm thể tích của nhà kính. 
+    \item [--] \textbf{Đầu ra:} Giá trị nhiệt độ, được báo cáo lên bộ điều khiển, bộ điều khiển sẽ chuyển tiếp tới máy chủ IoT. 
+\end{itemize}
 
+\subsection{Cảm biến độ ẩm đất}
+\begin{itemize}
+    \item [--] \textbf{Ứng dụng:} Đo độ ẩm của đất và sử dụng kết quả từ cảm biến để quyết định việc tưới nước.
+    \item [--] \textbf{Đầu vào:} Độ ẩm của đất.
+    \item [--] \textbf{Đầu ra:} Dữ liệu số hóa về độ ẩm của đất.
+\end{itemize}
+
+\subsection{Cảm biến ánh sáng}
+\begin{itemize}
+    \item [--] \textbf{Ứng dụng:} Giúp nhận biết và đo lường cường độ ánh sáng của môi trường nhà kính. Có vai trò quyết định việc mở đèn thêm.
+    \item [--] \textbf{Đầu vào:} Ánh sáng.
+    \item [--] \textbf{Đầu ra:} Số liệu về cường độ ánh sáng.
+\end{itemize}
+
+\subsection{Công tắc Relay}
+\begin{itemize}
+    \item [--] \textbf{Ứng dụng:} Được sử dụng để điều khiển động cơ bơm nước
+    \item [--] \textbf{Đầu vào:} Tính hiệu bật/tắt.
+    \item [--] \textbf{Đầu ra:} Nếu nhận được tính hiệu bật, truyền điện đến động cơ bơm nước. Nếu nhận được tính hiệu tắt, ngắn điện đến động cơ bơm nước.
+\end{itemize}
+
+\subsection{Động cơ bơm nước}
+\begin{itemize}
+    \item [--] \textbf{Ứng dụng:} Dùng để bơm nước, phục vụ cho việc tưới cây.
+    \item [--] \textbf{Đầu vào:} Nguồn điện.
+    \item [--] \textbf{Đầu ra:} Nếu nhận được điện, động cơ sẽ bắt đầu việc bơm nước để tưới cây.
+\end{itemize}
+
+\subsection{Động cơ Servo SG90S}
+\begin{itemize}
+    \item [--] \textbf{Ứng dụng:} Sử dụng để điều khiển mái che, có mục đích che nắng.
+    \item [--] \textbf{Đầu vào:} Lệnh điều khiển từ người dùng, hoặc dữ liệu từ cảm biến ánh sáng
+    \item [--] \textbf{Đầu ra:} Đóng và mở mái che dựa vào dữ liệu được truyền đến.
+\end{itemize}
+
+\subsection{Đèn 4 LED RGB}
+\begin{itemize}
+    \item [--] \textbf{Ứng dụng:} Được sử dụng như một đèn quang hợp tượng trưng.
+    \item [--] \textbf{Đầu vào:} Lệnh từ người dùng, hoặc dữ liệu từ cảm biến ánh sáng.
+    \item [--] \textbf{Đầu ra:} Bật hoặc tắt đèn tùy theo dữ liệu được truyền đến.
+\end{itemize}
+
+\subsection{Yolo:Bit}
+\textbf{Ứng dụng:} Đóng vai trò máy chủ của hệ thống, nhận các thông tin từ các cảm biến và gửi dữ liệu nhận được lên máy chủ MQTT.
+
+\subsection{Mạch mở rộng}
+\textbf{Ứng dụng:} Cung cấp thêm các port kết nối cho các cảm biến gắn với Yolo:Bit
 \newpage
