@@ -1,0 +1,80 @@
+\section{Cơ sở lý thuyết và công nghệ}
+\subsection{Kiến thức nền tảng}
+\subsubsection{Mô hình phát triển phần mềm}
+
+Trong suốt quá trình thực hiện dự án, nhóm áp dụng Scrum Framework, một mô hình phát triển phần mềm linh hoạt thuộc phương pháp Agile. Scrum chia quá trình phát triển thành các chu kỳ ngắn gọi là Sprint (thường kéo dài từ 1–2 tuần), trong đó nhóm tập trung hoàn thành một tập hợp các chức năng cụ thể. Việc áp dụng Scrum giúp nhóm dễ dàng thích ứng với các thay đổi yêu cầu, cải thiện chất lượng phần mềm thông qua kiểm tra và phản hồi liên tục, đồng thời thúc đẩy sự phối hợp chặt chẽ giữa các thành viên.
+
+Các thành phần chính trong quy trình Scrum nhóm đã áp dụng bao gồm:
+\begin{itemize}
+    \item Product Backlog: Danh sách các yêu cầu và chức năng cần phát triển.
+    \item Sprint Planning: Phiên lập kế hoạch cho từng Sprint.
+    \item Daily Standup: Họp nhanh mỗi ngày để cập nhật tiến độ và xử lý vướng mắc.
+    \item Sprint Review và Sprint Retrospective: Đánh giá kết quả và cải tiến quy trình sau mỗi Sprint.
+\end{itemize}
+
+\subsubsection{Kiến trúc phần mềm}
+
+Hệ thống phần mềm của dự án được phát triển theo mô hình kiến trúc MVC (Model – View – Controller). Mô hình này giúp tách biệt rõ ràng giữa ba thành phần chính:
+\begin{itemize}
+    \item Model: Quản lý dữ liệu và logic nghiệp vụ.
+    \item View: Giao diện người dùng, nơi hiển thị thông tin và nhận tương tác.
+    \item Controller: Điều phối luồng dữ liệu giữa Model và View, xử lý yêu cầu từ người dùng.
+\end{itemize}
+
+Cách tổ chức này giúp tăng tính mô-đun, dễ bảo trì và mở rộng hệ thống trong tương lai, đồng thời phù hợp với phương pháp phát triển theo nhóm với nhiều thành viên phụ trách các phần khác nhau.
+
+\subsubsection{MCP (Model – Context – Protocol)}
+
+Đối với tính năng điều khiển thiết bị IoT bằng ngôn ngữ tự nhiên thông qua AI, nhóm không sử dụng MVC mà chuyển sang kiến trúc MCP (Model – Context – Protocol) — một mô hình hiện đại chuyên dùng cho hệ thống tương tác ngôn ngữ người dùng kết hợp AI.
+\begin{itemize}
+    \item Model: Định nghĩa cấu trúc dữ liệu, các loại thiết bị, hành động và ngữ nghĩa điều khiển có thể xảy ra trong hệ thống.
+    \item Context: Mô tả trạng thái hiện tại của hệ thống (ví dụ: nhiệt độ hiện tại, trạng thái thiết bị đang bật hay tắt...), đồng thời lưu vết các tương tác trước đó nhằm duy trì ngữ cảnh hội thoại.
+    \item Protocol: Là phần tiếp nhận và phân tích đầu vào từ người dùng (câu lệnh ngôn ngữ tự nhiên), diễn dịch thành hành động cụ thể, và ánh xạ với các API điều khiển IoT có sẵn.
+\end{itemize}
+
+Luồng hoạt động cơ bản như sau:
+\begin{enumerate}
+    \item Người dùng nhập câu lệnh bằng tiếng Việt, ví dụ: “Tắt quạt nếu nhiệt độ dưới 28 độ”.
+    \item Protocol dùng AI (chẳng hạn một LLM như GPT) để phân tích câu lệnh, xác định hành động, điều kiện và thiết bị tương ứng.
+    \item Context được truy xuất để xác định trạng thái hiện tại của hệ thống và đối chiếu với điều kiện.
+    \item Nếu điều kiện đúng, hành động sẽ được biến đổi thành lệnh API để điều khiển thiết bị.
+    \item Kết quả thực thi và phản hồi được ghi lại, cập nhật lại Context và gửi phản hồi cho người dùng.
+\end{enumerate}
+
+Việc áp dụng MCP trong tính năng AI giúp nhóm dễ dàng mở rộng khả năng hiểu và xử lý ngôn ngữ tự nhiên, giảm sự phụ thuộc vào các câu lệnh cứng, đồng thời tách biệt rõ logic diễn dịch, trạng thái và giao tiếp hệ thống. Đây là bước đầu trong việc tạo ra một hệ thống nhà kính thông minh có thể hiểu, phản hồi và hành động dựa trên ngôn ngữ con người – hướng tới trải nghiệm người dùng tự nhiên hơn.
+
+\subsubsection{Giao tiếp với thiết bị IoT} 
+
+Việc giao tiếp với thiết bị IoT được thực hiện thông qua giao thức MQTT, sử dụng nền tảng Adafruit IO làm MQTT broker trung gian. Backend gửi các tín hiệu điều khiển thiết bị (như bật/tắt, thay đổi ngưỡng...) bằng cách publish dữ liệu đến các topic MQTT trên Adafruit IO. Yolo:Bit thực hiện việc subscribe các topic này để nhận lệnh và phản hồi trạng thái. Hệ thống cũng thu thập dữ liệu cảm biến từ thiết bị gửi ngược về, đảm bảo hai chiều truyền thông qua MQTT diễn ra ổn định và theo thời gian thực.
+
+Việc tích hợp MQTT – Adafruit IO mang lại giải pháp giao tiếp nhẹ, hiệu quả, thời gian thực và dễ triển khai cho hệ thống nhà kính thông minh, đặc biệt phù hợp với môi trường mạng không ổn định hoặc tài nguyên phần cứng hạn chế.
+
+\subsection{Công nghệ sử dụng}
+
+\subsubsection{Frontend}
+
+Phần giao diện người dùng (frontend) của hệ thống được xây dựng bằng React, một thư viện JavaScript phổ biến do Facebook phát triển. React cho phép phát triển giao diện tương tác, có khả năng cập nhật dữ liệu theo thời gian thực mà không cần tải lại toàn bộ trang. Việc sử dụng component-based architecture của React giúp nhóm dễ dàng tái sử dụng mã nguồn và tăng tốc độ phát triển giao diện.
+Backend
+
+\subsubsection{Backend}
+
+Phần xử lý logic và API phía máy chủ được hiện thực bằng Flask, một micro-framework viết bằng Python. Flask nhẹ, linh hoạt, dễ tích hợp với nhiều thư viện mở rộng và đặc biệt phù hợp với các dự án nhỏ hoặc nguyên mẫu (prototype). Backend chịu trách nhiệm nhận dữ liệu từ cảm biến (qua Wi-Fi), lưu trữ vào cơ sở dữ liệu, xử lý lệnh điều khiển từ người dùng, và trả về dữ liệu cho frontend hiển thị.
+
+Việc giao tiếp giữa Adafruit IO và thiết bị Yolo:Bit được lập trình bằng ngôn ngữ C++, thông qua thư viện hỗ trợ giao thức MQTT dành cho vi điều khiển ESP32. Trong đó, Yolo:Bit thực hiện việc subscribe đến các topic tương ứng trên Adafruit IO để nhận lệnh điều khiển từ hệ thống, đồng thời publish dữ liệu cảm biến thu thập được về lại broker. Toàn bộ quá trình này được thực thi trực tiếp trên firmware chạy C++ nhằm đảm bảo hiệu suất xử lý, độ trễ thấp và tính ổn định trong môi trường nhúng tài nguyên hạn chế.
+
+\subsubsection{Cơ sở dữ liệu}
+
+Nhóm sử dụng MongoDB làm hệ quản trị cơ sở dữ liệu. Đây là một cơ sở dữ liệu NoSQL dạng tài liệu, cho phép lưu trữ dữ liệu dưới dạng BSON (Binary JSON). MongoDB đặc biệt phù hợp với các hệ thống IoT do khả năng lưu trữ linh hoạt, không cần định nghĩa cấu trúc cứng nhắc, và dễ dàng mở rộng khi lượng dữ liệu lớn lên theo thời gian.
+Các công cụ hỗ trợ
+
+\subsubsection{Các công cụ hỗ trợ}
+
+Trong quá trình phát triển, nhóm sử dụng GitHub làm nền tảng quản lý mã nguồn. GitHub hỗ trợ làm việc nhóm hiệu quả thông qua các chức năng như:
+\begin{itemize}
+    \item Quản lý phiên bản (version control)
+    \item Tạo nhánh phát triển độc lập (branching)
+    \item Gộp mã (pull request) và rà soát mã (code review)
+    \item Theo dõi tiến độ công việc bằng các công cụ như Projects, Issues và Milestones
+\end{itemize}
+
+\newpage

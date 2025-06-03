@@ -1,13 +1,53 @@
-\section{Usecase diagram}
-\subsection{Toàn bộ hệ thống}
+\section{Phân tích và thiết kế hệ thống}
+\subsection{Phân tích yêu cầu}
+\subsubsection{Yêu cầu chức năng}
+
+\textbf{Về mặt thiết bị IoT:}
+\begin{itemize}
+    \item [--] Cung cấp báo cáo khí hậu trực tiếp dưới dạng biểu đồ và nhật ký, giúp theo dõi nhiệt độ, độ ẩm và ánh sáng trong nhà kính.  
+    \item [--] Tưới nước tự động theo độ ẩm đất và loại cây, đảm bảo cây phát triển khỏe mạnh mà không cần tưới thủ công thường xuyên.  
+    \item [--] Duy trì điều kiện khí hậu lý tưởng (nhiệt độ, thông gió, chiếu sáng) bằng phương thức thủ công, tự động hoặc theo lịch trình cài đặt trước.  
+    \item [--] Phát hiện và báo cáo các sự cố khi không thể duy trì điều kiện môi trường trong ngưỡng cho phép, giúp người dùng can thiệp kịp thời.  
+    \item [--] Nhắc nhở định kỳ các công việc bảo trì thủ công như kiểm tra nguồn nước, vệ sinh cửa sổ và đảm bảo hệ thống thông gió hoạt động hiệu quả.
+\end{itemize}
+
+\textbf{Về mặt Web App:}
+\begin{itemize}
+    \item [--] Cho phép người dùng điều khiển thủ công các chức năng cụ thể trong nhà kính, như tưới cây, bật/tắt đèn và kích hoạt hệ thống cảnh báo, giúp linh hoạt trong việc quản lý môi trường trồng trọt.
+    \item [--] Cung cấp số liệu khí hậu hiện tại cùng với dữ liệu lịch sử, giúp người dùng theo dõi sự thay đổi môi trường và đưa ra quyết định phù hợp cho cây trồng.
+    \item [--] Thực hiện phân tích thống kê và cung cấp báo cáo chi tiết về tình trạng và hiệu suất hoạt động của hệ thống, giúp tối ưu hóa quá trình vận hành và bảo trì. 
+\end{itemize}
+
+\subsubsection{Yêu cầu phi chức năng}
+
+\textbf{Về mặt thiết bị IoT:}
+\begin{itemize}
+    \item [--] Hệ thống phải hoạt động liên tục 24/7 với thời gian gián đoạn theo lịch trình không quá 2 giờ mỗi tháng và không có gián đoạn đột xuất quá 10 phút.
+    \item [--] Độ trễ của bộ truyền động khi thực hiện lệnh không được vượt quá 5 giây trong 95\% trường hợp kiểm tra.
+    \item [--] Hệ thống phải ghi nhật ký dữ liệu lịch sử liên tục, lưu trữ ít nhất 180 ngày với độ chính xác $\pm 1\%$ và không mất dữ liệu quá 0,1\% trong quá trình vận hành.
+    \item [--] Cơ sở dữ liệu phải hỗ trợ lưu trữ tối thiểu 500MB và có thể mở rộng lên đến 2GB mà không ảnh hưởng đến hiệu suất truy xuất dữ liệu (tốc độ phản hồi dưới 1 giây cho 95\% truy vấn).
+    \item [--] Hướng dẫn sử dụng phải dễ hiểu, cho phép người dùng mới vận hành hệ thống trong vòng 10 phút mà không cần trợ giúp. Giao diện LCD và nút bấm phải phản hồi trong vòng 1 giây sau khi thao tác.
+\end{itemize}
+
+\textbf{Về mặt Web App:}
+\begin{itemize}
+    \item [--] Hệ thống phải dễ sử dụng cho mọi độ tuổi, đặc biệt hướng đến nông dân, người làm vườn và quản lý nông nghiệp, với thời gian đào tạo không quá 15 phút.
+    \item [--] Ứng dụng web phải tương thích với các trình duyệt phổ biến, bao gồm Chrome, Firefox, Edge và Safari, với hiệu suất ổn định trên cả máy tính và thiết bị di động.
+    \item [--] Kết nối với máy chủ phải hoàn tất trong vòng 2 giây, trong khi các thao tác giao diện cơ bản (bấm nút, cuộn trang) phải phản hồi trong vòng 500ms.
+    \item [--] Hỗ trợ lưu trữ dữ liệu cục bộ tối đa 100MB, đồng thời đồng bộ dữ liệu với máy chủ mà không làm gián đoạn hoạt động của ứng dụng.
+    \item [--] Người dùng phải có thể xác thực bằng mật khẩu và/hoặc hình vẽ mẫu, với mật khẩu được lưu trữ an toàn theo tiêu chuẩn mã hóa SHA-256 hoặc cao hơn.
+\end{itemize}
+
+\subsection{Use Case Diagram}
+\subsubsection{Toàn bộ hệ thống}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth]{content/images/GreenSense_UC_Diagram.png}
+    \includegraphics[width=0.5\linewidth]{content/images/GreenSense_UC_Diagram.png}
     \caption{Biểu đồ use case cho hệ thống Green Sense}
     \label{fig:useCaseDiagram}
 \end{figure}
-\subsection{Bảng mô tả cho từng use case}
-\subsubsection{Use case 1 - Tưới nước}
+\subsubsection{Bảng mô tả cho từng use case}
+\textbf{Use case 1 - Tưới nước}
 
 \renewcommand{\arraystretch}{1.6}
 \begin{table}[H]
@@ -64,7 +104,7 @@ Alternative Flow          &
 
 
 
-\subsubsection{Use case 2 - Điều chỉnh nhiệt độ}
+\textbf{Use case 2 - Điều chỉnh nhiệt độ}
 \renewcommand{\arraystretch}{1.6}
 \begin{table}[H]
 \centering
@@ -111,7 +151,7 @@ Alternative Flow 2        &
 \caption{Bảng mô tả cho use case Điều chỉnh nhiệt độ}
 \end{table}
 
-\subsubsection{Use case 3 - Điều chỉnh ánh sáng}
+\textbf{Use case 3 - Điều chỉnh ánh sáng}
 \renewcommand{\arraystretch}{1.6}
 \begin{table}[H]
 \centering
@@ -143,7 +183,7 @@ Alternative Flow 2          &
 \caption{Bảng mô tả cho use case Điều chỉnh ánh sáng}
 \end{table}
 
-\subsubsection{Use case 4 - Theo dõi dữ liệu theo thời gian thực và thống kê hệ thống}
+\textbf{Use case 4 - Theo dõi dữ liệu theo thời gian thực và thống kê hệ thống}
 \renewcommand{\arraystretch}{1.6}
 \begin{table}[H]
 \centering
@@ -174,7 +214,7 @@ Exception Flow          &
 \caption{Bảng mô tả cho use case Theo dõi dữ liệu theo thời gian thực và thống kê hệ thống}
 \end{table}
 
-\subsubsection{Use case 5 - Điều khiển IoT Device trong hệ thống bằng Chatbox AI}
+\textbf{Use case 5 - Điều khiển IoT Device trong hệ thống bằng Chatbox AI}
 
 \renewcommand{\arraystretch}{1.6}
 \begin{table}[H]
@@ -215,45 +255,86 @@ Exception Flow          &
 \caption{Bảng mô tả cho use case Điều khiển IoT Device trong hệ thống bằng Chatbox AI}
 \end{table}
 
-% TBU
-% \renewcommand{\arraystretch}{1.6}
-% \begin{table}[H]
-% \centering
-% \begin{tabular}{|p{0.2\linewidth}|p{0.7\linewidth}|}
-% \hline
-% \rowcolor[HTML]{EFEFEF} 
-% \textbf{Usecase}        & \textbf{Tưới nước} \\ \hline
-% Use case ID             & 5 \\ \hline
-% Actor                   & Người dùng của hệ thống \\ \hline
-% Description             & Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut augue in odio ultricies vehicula vel quis ex. Nullam ut lacinia ex, eget maximus ante. Donec dictum rutrum efficitur. Aliquam ut dui in nunc tincidunt posuere eget vitae arcu. In eget leo id turpis scelerisque malesuada. Nam semper fringilla lorem nec ornare. Mauris gravida pharetra enim, at fermentum nunc. \\ \hline
-% Precondition            & Sed laoreet ultrices lobortis. Proin pretium aliquet neque vel suscipit. Nam nec auctor sem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas tincidunt at erat porta lobortis. Aenean a tincidunt erat. Integer tempus orci a ornare feugiat. Cras eros ligula, laoreet et ante eu, consectetur lacinia mi. Cras ac porttitor ex, id facilisis tortor. Duis sit amet auctor enim. \\ \hline
-% Postcondition           & Vivamus luctus lacinia ullamcorper. Fusce a fermentum nunc. Quisque luctus lobortis dolor id blandit. Donec quis tortor volutpat, vehicula lectus ac, dictum magna. Sed in sem non nisi finibus finibus. Etiam sagittis nisl sit amet urna ultrices condimentum. Donec nec molestie ligula. Vestibulum pellentesque feugiat lacus vel gravida. Vivamus sed egestas nisl. Praesent lacus  Fusce viverra purus quis eleifend gravida.  \\ \hline
-% Trigger                 & Vivamus luctus lacinia ullamcorper. Fusce a fermentum nunc. Quisque luctus lobortis dolor id blandit. Donec quis tortor volutpat, vehicula lectus ac, dictum magna. Sed in sem non nisi finibus finibus. Etiam sagittis nisl sit amet urna ultrices condimentum. Donec nec molestie ligula. Vestibulum pellentesque feugiat lacus vel gravida. Vivamus sed egestas nisl. Praesent lacus  Fusce viverra purus quis eleifend gravida.  \\ \hline
-% Normal Flow             & Vivamus luctus lacinia ullamcorper. Fusce a fermentum nunc. Quisque luctus lobortis dolor id blandit. Donec quis tortor volutpat, vehicula lectus ac, dictum magna. Sed in sem non nisi finibus finibus. Etiam sagittis nisl sit amet urna ultrices condimentum. Donec nec molestie ligula. Vestibulum pellentesque feugiat lacus vel gravida. Vivamus sed egestas nisl. Praesent lacus  Fusce viverra purus quis eleifend gravida.  \\ \hline
-% Exception Flow          & Vivamus luctus lacinia ullamcorper. Fusce a fermentum nunc. Quisque luctus lobortis dolor id blandit. Donec quis tortor volutpat, vehicula lectus ac, dictum magna. Sed in sem non nisi finibus finibus. Etiam sagittis nisl sit amet urna ultrices condimentum. Donec nec molestie ligula. Vestibulum pellentesque feugiat lacus vel gravida. Vivamus sed egestas nisl. Praesent lacus  Fusce viverra purus quis eleifend gravida.  \\ \hline
-% \end{tabular}
-% \caption{Usecase specification ABC}
-% \end{table}
+\subsection{Thiết kế hệ thống}
 
+\subsubsection{Kiến trúc tổng thể}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{content/images/SystemComponents.png}
+    \caption{Kiến trúc tổng thể của hệ thống Green Sense}
+    \label{fig:overallStructure}
+\end{figure}
+
+\textbf{Các thành phần chính}:
+\begin{itemize}
+\item \textit{Frontend (React)}: Cung cấp giao diện người dùng trực quan để giám sát trạng thái nhà kính, điều khiển thiết bị, và tương tác với tính năng điều khiển thiết bị bằng ngôn ngữ tự nhiên qua AI. Frontend gửi các yêu cầu đến backend qua API REST để thực hiện các thao tác.
+
+\item \textit{Backend (Flask)}: Xử lý logic nghiệp vụ, quản lý dữ liệu và tiếp nhận các lệnh từ frontend. Backend có trách nhiệm điều phối hoạt động của thiết bị IoT thông qua giao thức MQTT và kết nối với cơ sở dữ liệu MongoDB để lưu trữ trạng thái và lịch sử hoạt động của hệ thống.
+
+\item \textit{Database (MongoDB)}: Lưu trữ thông tin về trạng thái hiện tại của các thiết bị, dữ liệu cảm biến thu thập được và lịch sử hoạt động để phục vụ cho việc giám sát, phân tích và báo cáo.
+
+\item \textit{Thiết bị IoT (tích hợp trên Yolo:Bit)}: Thiết bị vật lý chịu trách nhiệm thu thập dữ liệu cảm biến như nhiệt độ, độ ẩm, ánh sáng và thực thi các lệnh điều khiển nhận được từ hệ thống. Thiết bị giao tiếp với backend thông qua giao thức MQTT trên nền tảng Adafruit IO. Firmware của thiết bị được phát triển bằng ngôn ngữ C++ để đảm bảo hiệu suất và ổn định trong môi trường nhúng.
+
+\item \textit{IoT Monitor and Controller (Python)}: Là module độc lập được phát triển bằng Python, có nhiệm vụ lắng nghe các dữ liệu cảm biến thời gian thực từ nền tảng Adafruit IO. Khi nhận dữ liệu, module này sẽ thực hiện việc bật/tắt các thiết bị nếu chế độ điều khiển đang được đặt ở trạng thái tự động. Đồng thời, nó sẽ lưu trữ dữ liệu thu thập được lên MongoDB để đảm bảo tính nhất quán và theo dõi trạng thái hệ thống.
+
+\item \textit{Nền tảng MQTT – Adafruit IO}: Là dịch vụ trung gian đóng vai trò broker MQTT, kết nối backend và thiết bị IoT, đảm bảo việc truyền nhận dữ liệu và lệnh điều khiển được diễn ra một cách nhanh chóng, ổn định và theo thời gian thực.
+\end{itemize}
+
+\textbf{Luồng dữ liệu và tương tác giữa các thành phần}:
+\begin{enumerate}
+    \item Người dùng tương tác với giao diện frontend để thực hiện giám sát và điều khiển nhà kính.
+    \item Frontend gửi yêu cầu thông qua API REST đến backend xử lý.
+    \item Backend chuyển lệnh điều khiển đến thiết bị IoT qua giao thức MQTT trên Adafruit IO.
+    \item Thiết bị IoT nhận lệnh và thực thi các hành động, đồng thời gửi dữ liệu cảm biến về lại Adafruit IO.
+    \item Module IoT Monitor and Controller nhận dữ liệu cảm biến từ Adafruit IO, quyết định hành động bật/tắt thiết bị nếu ở chế độ tự động, và cập nhật dữ liệu vào MongoDB.
+    \item Backend truy xuất dữ liệu từ MongoDB để phản hồi trạng thái và lịch sử hoạt động cho frontend hiển thị.
+\end{enumerate}
+
+\subsubsection{Thiết kế cơ sở dữ liệu}
+
+Hệ thống sử dụng cơ sở dữ liệu để lưu trữ ba loại thông tin chính:
+\begin{enumerate}
+    \item Lịch sử hoạt động của các thiết bị IoT
+    \item Dữ liệu thu thập từ các cảm biến (sensors)
+    \item Thông tin về các tác vụ được người dùng cấu hình trong chế độ lập lịch hoạt động của thiết bị
+\end{enumerate}
+
+Do sử dụng MongoDB – một hệ quản trị cơ sở dữ liệu NoSQL dạng document – nên cấu trúc cơ sở dữ liệu không tuân theo mô hình quan hệ truyền thống. Thay vào đó, thiết kế được thể hiện dưới dạng Class Diagram, nhằm mô tả trực quan các trường dữ liệu có trong từng collection.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{content/images/SystemComponents.png}
+    \caption{Class Diagram mô tả cấu trúc cơ sở dữ liệu MongoDB của hệ thống}
+    \label{fig:classDiagram}
+\end{figure}
+
+Mô hình dữ liệu bao gồm các collection chính sau:
+\begin{itemize}
+    \item Activity: Lưu trữ các hoạt động của thiết bị với các thuộc tính gồm:
+    \begin{itemize}
+        \item \texttt{time} (datetime): Thời điểm ghi nhận hoạt động
+        \item \texttt{data} (int): Giá trị định lượng của hoạt động
+        \item \texttt{activity\_type} (str): Loại hoạt động được thực hiện
+    \end{itemize}
+    
+    \item Humid, Light, Temperature: Mỗi collection lưu dữ liệu tương ứng từ cảm biến độ ẩm, ánh sáng và nhiệt độ. Các trường dữ liệu gồm:
+    \begin{itemize}
+        \item \texttt{time} (datetime): Thời điểm ghi nhận
+        \item \texttt{data} (int): Giá trị đo được từ cảm biến
+    \end{itemize}
+
+    \item Scheduler\_job: Lưu thông tin về các job được người dùng lập lịch cho thiết bị. Các trường dữ liệu gồm:
+    \begin{itemize}
+        \item \texttt{job\_id} (str): Mã định danh của job
+        \item \texttt{device\_id} (str): Mã thiết bị tương ứng
+        \item \texttt{action} (str): Hành động sẽ được thực hiện
+        \item \texttt{action\_options} (dict): Các tùy chọn cấu hình cho hành động
+        \item \texttt{trigger} (str): Kiểu kích hoạt job (ví dụ: theo thời gian, sự kiện,...)
+        \item \texttt{trigger\_options} (dict): Các tùy chọn cấu hình cho trigger
+    \end{itemize}
+\end{itemize}
+
+Thiết kế này đảm bảo tính mở rộng, linh hoạt và dễ tích hợp với các hệ thống IoT, đồng thời phù hợp với đặc điểm lưu trữ phi quan hệ của MongoDB.
 
 \newpage
 
-% Table template %
-
-% \renewcommand{\arraystretch}{1.6}
-% \begin{table}[H]
-% \centering
-% \begin{tabular}{|l|l|}
-% \hline
-% \rowcolor[HTML]{EFEFEF} 
-% \textbf{Usecase}          & \textbf{Usecase ABC} \\ \hline
-% Actor            & Người dùng của hệ thống \\ \hline
-% Description      & \begin{tabular}[c]{@{}l@{}}Mô tả chi tiết chức năng chính  \\ Mô tả chi tiết chức năng chính\end{tabular} \\ \hline
-% Precondition     & \\ \hline
-% Postcondition    & \\ \hline
-% Trigger          & \\ \hline
-% Normal Flow      & \\ \hline
-% Exception Flow   & \\ \hline
-% \end{tabular}
-% \caption{Usecase specification ABC}
-% \end{table}
