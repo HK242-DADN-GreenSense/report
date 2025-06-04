@@ -1,30 +1,57 @@
-\usepackage{minted}
-\setminted{
-    labelposition=topline,
-    %
-    % frame=lines,
-    frame=single,
-    framerule=1pt,
-    framesep=10pt,
-    rulecolor=Gray,
-    bgcolor=LightGray,
-    %
-    % codetagify={NOTE, TODO, BUG},
-    %
-    baselinestretch=1.2,
-    linenos=true,
-    numberblanklines=true,
-    %
-    tabsize=4,
-    obeytabs=true,
-    autogobble=true,
-    % gobble=?,
-    %
-    breaklines=true,
-    breakafter={,]\}},
-    breakbefore={+-*/\%\#[\{},
-    samepage=true,
-    %
+% \usepackage{minted}
+% \setminted{
+%     labelposition=topline,
+%     %
+%     % frame=lines,
+%     frame=single,
+%     framerule=1pt,
+%     framesep=10pt,
+%     rulecolor=Gray,
+%     bgcolor=LightGray,
+%     %
+%     % codetagify={NOTE, TODO, BUG},
+%     %
+%     baselinestretch=1.2,
+%     linenos=true,
+%     numberblanklines=true,
+%     %
+%     tabsize=4,
+%     obeytabs=true,
+%     autogobble=true,
+%     % gobble=?,
+%     %
+%     breaklines=true,
+%     breakafter={,]\}},
+%     breakbefore={+-*/\%\#[\{},
+%     samepage=true,
+%     %
+% }
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
 }
 
-% \usepackage{listings}
+\lstset{style=mystyle}
