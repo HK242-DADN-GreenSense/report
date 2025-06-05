@@ -241,9 +241,126 @@ Tính năng này cho phép người dùng theo dõi dữ liệu lịch sử từ
     Mỗi component nhận dữ liệu qua props \texttt{xAxis}, \texttt{yAxis}, và \texttt{latest}, sau đó hiển thị biểu đồ trực quan cho người dùng.
 \end{itemize}
     
-\subsubsection{Tính năng điều khiển thiết bị thông qua AI Chatbox}
+\subsubsection{Tính năng điều khiển thiết bị thông qua AI Chatbot}
 
-TBU
+\textbf{Mục tiêu}
+
+Phát triển hệ thống AI Chatbot thông minh có khả năng điều khiển các thiết bị IoT trong môi trường smart farm thông qua giao tiếp tự nhiên. Hệ thống cho phép người dùng tương tác bằng ngôn ngữ tự nhiên để điều khiển các thiết bị như máy bơm, đèn LED, và servo motor mà không cần phải hiểu rõ về lệnh kỹ thuật phức tạp.
+
+\textbf{Quy trình hoạt động}
+\begin{enumerate}
+    \item Tiếp nhận yêu cầu từ người dùng: Người dùng nhập lệnh bằng ngôn ngữ tự nhiên qua giao diện người dùng (UI).
+    \item Phân tích ngôn ngữ tự nhiên: AI Chatbot sẽ phân tích câu lệnh người dùng để trích xuất ý định (intent) và thông tin liên quan (ví dụ: thiết bị, trạng thái).
+    \item Gửi yêu cầu điều khiển: Dữ liệu được gửi đến máy chủ điều khiển thiết bị (Control Server).
+    \item Thực thi lệnh: Máy chủ điều khiển thực hiện yêu cầu tương ứng với các thiết bị IoT qua giao thức nội bộ.
+    \item Phản hồi kết quả: Hệ thống gửi phản hồi về trạng thái hoặc kết quả thực thi về UI để hiển thị cho người dùng.
+\end{enumerate}
+
+\textbf{Hiện thực tính năng}
+
+\begin{enumerate}
+    \item Xử lý Function Calling với AI Model \newline
+    Đoạn code dưới đây thực hiện việc gửi yêu cầu của người dùng đến model Gemini 2.0 Flash cùng với danh sách các function có thể gọi. Model sẽ phân tích yêu cầu và quyết định có cần gọi function nào không. Nếu có, hệ thống sẽ thực thi function đó và trả về kết quả.
+    \begin{lstlisting}[language=Python]
+def call_model(self, state: MessagesState):
+    tools = types.Tool(function_declarations=self.tools_list)
+    config = types.GenerateContentConfig(tools=[tools])
+    
+    response = self.client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=state["messages"][-1].content,
+        config=config,
+    )
+    
+    # Kiểm tra nếu có function call
+    if response.candidates[0].content.parts[0].function_call:
+        function_call = response.candidates[0].content.parts[0].function_call
+        data = self.function_calling_excution(function_call.name, function_call.args)
+        
+        return {
+            "messages": state["messages"] + [AIMessage(content=json.dumps(data, ensure_ascii=False))]
+        }
+    \end{lstlisting}
+
+    \item Thực thi Function Calling \newline
+    Khi AI model quyết định gọi một function, đoạn code này sẽ phân tích tên function để xác định thiết bị cần điều khiển và tên function thực tế, sau đó chuyển tiếp lệnh đến client tương ứng.
+    \begin{lstlisting}[language=Python]
+def function_calling_excution(self, function_name, arguments):
+    client = self.listTool[function_name.split('_')[0]]
+    functionName = function_name[function_name.index('_') + 1:]
+    data = client.function_calling(functionName, arguments)
+    return data
+    \end{lstlisting}
+    
+    \item Giao tiếp WebSocket Real-time \newline
+    Đây là handler xử lý tin nhắn từ server WebSocket. Khi nhận được lệnh 'discover', client sẽ cập nhật danh sách công cụ có thể sử dụng. Đối với các message khác, nó sẽ lưu trữ dữ liệu phản hồi và kích hoạt event để thông báo cho thread chính.
+    \begin{lstlisting}[language=Python]
+def on_message(self, ws, message):
+    data = json.loads(message)
+    if data['function'] == 'discover':
+        for el in data["data"]:
+            el["name"] = self.client_name + '_' + el["name"]
+            el["description"] = self.description + '.' + el["description"]
+            self.tools.append(el)
+    else:
+        self.response_data = data
+        self.response_event.set()
+    \end{lstlisting}
+
+    \item Định nghĩa Function Schema cho Thiết bị \newline
+    Ví dụ về một Function Schema cho việc điều khiển đèn LED:
+    \begin{lstlisting}[language=Python]
+light_on_intensity = {
+    "name": "light_on_intensity",
+    "description": "Active light on by specify intensity",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "intensity": {
+                "type": "string",
+                "description": "The intensity of light. When user want to turn off light, agent set the intensity to 0",
+                'enum': [str(i) for i in range(0, 5)],
+                'default': "0",
+            },
+        },
+        "required": ['intensity']
+    },
+}
+    \end{lstlisting}
+    Đây là schema định nghĩa function cho việc điều khiển đèn LED. Schema này giúp AI model hiểu được function này có tác dụng gì, cần tham số gì và kiểu dữ liệu như thế nào. Điều này rất quan trọng để model có thể gọi đúng function với đúng tham số.
+
+    \item WebSocket Server Handler \newline
+    \begin{lstlisting}[language=Python]
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        request = json.loads(data)
+        
+        data = handle_request(request)
+        
+        response = {
+            "function": request['function'],
+            "data": data
+        }
+        
+        await websocket.send_text(json.dumps(response))
+    \end{lstlisting}
+    Đây là endpoint WebSocket server sử dụng FastAPI. Nó liên tục lắng nghe các yêu cầu từ client, xử lý chúng thông qua hàm \texttt{handle\_request()}, và gửi phản hồi trở lại client. Điều này tạo ra kết nối real-time giữa chatbot và server điều khiển thiết bị.
+
+    \item Xử lý Yêu cầu Điều khiển Thiết bị \newline
+    Hàm \texttt{handle\_request} phân loại và xử lý các yêu cầu. Nếu là yêu cầu 'discover', nó trả về danh sách các function có thể gọi. Nếu là yêu cầu điều khiển thiết bị, nó sẽ sử dụng reflection để gọi method tương ứng trong class \texttt{controlDevice} với các tham số được truyền vào.
+    \begin{lstlisting}[language=Python]
+def handle_request(request):
+    if request['function'] == 'discover':
+        return [pump_on_duration, light_on_intensity, servo_on_angle]
+    else:
+        f = getattr(tools, request['function'])
+        arguments = request.get('arguments') if request.get('arguments') != None else {}
+        return f(**arguments)
+    \end{lstlisting}
+\end{enumerate}
 
 \subsection{Giao diện hệ thống}
 
@@ -311,6 +428,30 @@ TBU
     \centering
     \includegraphics[width=1\linewidth]{content/images/temp_job.png}
     \caption{Màn hình đặt lịch hoạt động cho màn che (động cơ servo)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{content/images/AI_Chatbox_1.jpg}
+    \caption{Màn hình khởi động AI Chatbot}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{content/images/AI_Chatbox_2.jpg}
+    \caption{Điều khiển máy bơm (pump) bằng ngôn ngữ tự nhiên}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{content/images/AI_Chatbox_3.jpg}
+    \caption{Đặt lịch mở đèn bằng ngôn ngữ tự nhiên}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{content/images/AI_Chatbox_4.jpg}
+    \caption{Lấy dữ liệu của cảm biến độ ẩm đất bằng ngôn ngữ tự nhiên}
 \end{figure}
 
 \newpage

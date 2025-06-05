@@ -25,20 +25,46 @@ Cách tổ chức này giúp tăng tính mô-đun, dễ bảo trì và mở rộ
 
 \subsubsection{MCP (Model – Context – Protocol)}
 
-Đối với tính năng điều khiển thiết bị IoT bằng ngôn ngữ tự nhiên thông qua AI, nhóm không sử dụng MVC mà chuyển sang kiến trúc MCP (Model – Context – Protocol) — một mô hình hiện đại chuyên dùng cho hệ thống tương tác ngôn ngữ người dùng kết hợp AI.
+Model Context Protocol (MCP) là một giao thức mở được phát triển bởi Anthropic nhằm chuẩn hóa cách các ứng dụng AI kết nối và tương tác với nguồn dữ liệu cũng như công cụ bên ngoài. MCP được thiết kế để giải quyết vấn đề phân mảnh trong việc tích hợp AI với các hệ thống khác nhau.
+
+Các thành phần chính bao gồm:
 \begin{itemize}
-    \item Model: Định nghĩa cấu trúc dữ liệu, các loại thiết bị, hành động và ngữ nghĩa điều khiển có thể xảy ra trong hệ thống.
-    \item Context: Mô tả trạng thái hiện tại của hệ thống (ví dụ: nhiệt độ hiện tại, trạng thái thiết bị đang bật hay tắt...), đồng thời lưu vết các tương tác trước đó nhằm duy trì ngữ cảnh hội thoại.
-    \item Protocol: Là phần tiếp nhận và phân tích đầu vào từ người dùng (câu lệnh ngôn ngữ tự nhiên), diễn dịch thành hành động cụ thể, và ánh xạ với các API điều khiển IoT có sẵn.
+    \item MCP Client: Là ứng dụng AI hoặc công cụ AI (như Claude, ChatGPT), đảm nhiệm việc khởi tạo kết nối và gửi yêu cầu đến MCP Server, đồng thời xử lý và hiển thị kết quả từ server
+    \item MCP Server: Là dịch vụ cung cấp quyền truy cập vào nguồn dữ liệu hoặc công cụ cụ thể, thực hiện việc xử lý các yêu cầu từ client và trả về dữ liệu được định dạng, quản lý xác thực và phân quyền truy cập
+    \item Transport Layer: là lớp giao tiếp giữa client và server, thường sử dụng JSON-RPC over HTTP/WebSocket để đảm bảo tính bảo mật và tin cậy trong truyền tải dữ liệu
 \end{itemize}
 
-Luồng hoạt động cơ bản như sau:
+\textbf{Luồng hoạt động:}
 \begin{enumerate}
-    \item Người dùng nhập câu lệnh bằng tiếng Việt, ví dụ: “Tắt quạt nếu nhiệt độ dưới 28 độ”.
-    \item Protocol dùng AI (chẳng hạn một LLM như GPT) để phân tích câu lệnh, xác định hành động, điều kiện và thiết bị tương ứng.
-    \item Context được truy xuất để xác định trạng thái hiện tại của hệ thống và đối chiếu với điều kiện.
-    \item Nếu điều kiện đúng, hành động sẽ được biến đổi thành lệnh API để điều khiển thiết bị.
-    \item Kết quả thực thi và phản hồi được ghi lại, cập nhật lại Context và gửi phản hồi cho người dùng.
+    \item \textbf{Input Processing}: Người dùng nhập câu lệnh tiếng Việt (ví dụ: "Tắt quạt nếu nhiệt độ dưới 28 độ")
+    
+    \item \textbf{Intent Recognition}: Protocol Layer sử dụng LLM để:
+    \begin{itemize}
+        \item Phân tích ngữ nghĩa câu lệnh
+        \item Xác định thiết bị đích (quạt)
+        \item Trích xuất điều kiện (nhiệt độ < 28°C)
+        \item Xác định hành động (tắt)
+    \end{itemize}
+
+    \item \textbf{Context Evaluation}: Truy xuất Context Layer để:
+    \begin{itemize}
+        \item Kiểm tra trạng thái hiện tại của hệ thống
+        \item Đánh giá điều kiện đã đặt ra
+        \item Xác định tính khả thi của lệnh
+    \end{itemize}
+    \item \textbf{Action Execution}: Nếu điều kiện thỏa mãn:
+    \begin{itemize}
+        \item Chuyển đổi lệnh thành API calls
+        \item Gửi tín hiệu điều khiển đến thiết bị IoT
+        \item Cập nhật trạng thái trong Model Layer
+    \end{itemize}
+
+    \item \textbf{Feedback Loop}: 
+    \begin{itemize}
+        \item Ghi lại kết quả thực thi
+        \item Cập nhật Context Layer với thông tin mới
+        \item Gửi phản hồi xác nhận cho người dùng
+    \end{itemize}
 \end{enumerate}
 
 Việc áp dụng MCP trong tính năng AI giúp nhóm dễ dàng mở rộng khả năng hiểu và xử lý ngôn ngữ tự nhiên, giảm sự phụ thuộc vào các câu lệnh cứng, đồng thời tách biệt rõ logic diễn dịch, trạng thái và giao tiếp hệ thống. Đây là bước đầu trong việc tạo ra một hệ thống nhà kính thông minh có thể hiểu, phản hồi và hành động dựa trên ngôn ngữ con người – hướng tới trải nghiệm người dùng tự nhiên hơn.
